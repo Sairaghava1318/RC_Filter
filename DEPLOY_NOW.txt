@@ -1,0 +1,94 @@
+# 🚀 QUICK START - DEPLOY IN 15 MINUTES
+
+## Your project is completely ready. Just follow these 2 quick sections:
+
+---
+
+## 🔴 BACKEND (Render) - 5 Minutes
+
+```
+1. Go to https://render.com
+2. Sign up with GitHub → Authorize
+3. Click "New +" → "Web Service"
+4. Select "RC_Filter" repository
+5. Click "Connect"
+
+Configure:
+  Name: rc-filter-backend
+  Environment: Python 3
+  Build: pip install -r requirements.txt
+  Start: uvicorn server:app --host 0.0.0.0 --port $PORT
+  Plan: Free
+
+6. Click "Create Web Service" and WAIT 2-5 min
+7. Go to "Environment" tab
+8. Add: Key=CORS_ORIGINS, Value=*
+9. Save (auto-redeploys)
+10. Copy your URL: https://rc-filter-backend.onrender.com
+11. Test: https://YOUR_URL/health → Should see {"status":"ok"}
+```
+
+✅ **BACKEND LIVE!** Copy your URL.
+
+---
+
+## 🟢 FRONTEND (Netlify) - 5 Minutes
+
+```
+1. Go to https://netlify.com
+2. Sign up with GitHub → Authorize
+3. Click "Add new site" → "Import an existing project"
+4. Choose GitHub → Find "RC_Filter"
+5. Configure:
+   Base: frontend
+   Build: npm run build
+   Publish: frontend/build
+
+6. Click "Deploy site" and WAIT 3-5 min
+7. Go to "Site settings" → "Build & deploy" → "Environment"
+8. Add: Key=REACT_APP_BACKEND_URL, Value=https://YOUR_BACKEND_URL
+9. Save
+10. Go to "Deploys" → "Trigger deploy" → "Deploy site"
+11. WAIT 2-3 min
+12. Copy your URL from dashboard: https://YOUR_SITE.netlify.app
+```
+
+✅ **FRONTEND LIVE!**
+
+---
+
+## ✅ TEST (2 Minutes)
+
+```
+1. Open your Netlify URL
+2. Enter frequency: 1000
+3. Click "Calculate Gain"
+4. ✓ See results?
+5. ✓ See graph?
+6. Switch filter type and test again
+```
+
+✅ **WORKING!**
+
+---
+
+## 📍 YOUR LINKS
+
+**Backend:** https://rc-filter-backend.onrender.com/health  
+**Frontend:** https://YOUR_SITE.netlify.app  
+**GitHub:** https://github.com/Sairaghava1318/RC_Filter  
+
+---
+
+## 🔄 Future Updates
+
+Just do:
+```bash
+git push origin master
+```
+
+Both services auto-deploy! 🚀
+
+---
+
+That's it! You're deploying a production app RIGHT NOW.
