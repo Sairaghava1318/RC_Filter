@@ -1,44 +1,23 @@
-# RC Filter Simulator - Quick Deployment Steps
+# RC Filter Simulator - Quick Deployment Steps (No Database!)
 
 ## ✅ Prerequisites
 - [ ] GitHub account with your repository pushed
 - [ ] Render account (https://render.com)
 - [ ] Netlify account (https://netlify.com)
-- [ ] MongoDB Atlas account (https://www.mongodb.com/cloud/atlas)
+
+**No database needed!** Your backend only does math calculations.
 
 ---
 
-## 🔧 Step 1: Setup MongoDB Atlas (Database)
+## 🚀 Step 1: Deploy Backend to Render
 
-```bash
-1. Go to https://www.mongodb.com/cloud/atlas
-2. Create a free account
-3. Create a new project: "RC-Filter"
-4. Create a free cluster (M0 Shared)
-5. Create a database user:
-   - Username: your_username
-   - Password: your_strong_password
-6. Get connection string:
-   - Click "Connect" → "Drivers"
-   - Copy MongoDB connection string
-   - Replace <username> and <password> with your credentials
-   - Example: mongodb+srv://user:pass@cluster0.xxx.mongodb.net/?retryWrites=true&w=majority
-7. Whitelist IP: Click "Network Access" → "Allow access from anywhere" (0.0.0.0/0)
-```
-
-**Store this connection string - you'll need it for Render!**
-
----
-
-## 🚀 Step 2: Deploy Backend to Render
-
-### Option A: Using GitHub (Recommended)
+### Using GitHub (Recommended)
 
 ```bash
 1. Go to https://render.com
 2. Sign up with GitHub
 3. Click "New +" → "Web Service"
-4. Select your GitHub repository
+4. Select your GitHub repository (RC_Filter)
 5. Configure:
    - Name: rc-filter-backend
    - Environment: Python 3
@@ -54,9 +33,7 @@
 ```bash
 1. Go to your service dashboard
 2. Click "Environment" tab
-3. Add these variables:
-   MONGO_URL=<your_mongodb_connection_string>
-   DB_NAME=rc_filter_db
+3. Add this variable:
    CORS_ORIGINS=*
 4. Click "Save Changes"
 5. Service will redeploy automatically
@@ -64,19 +41,20 @@
 
 **After deployment:**
 - Your backend URL will be: `https://rc-filter-backend.onrender.com`
-- You can test it: `https://rc-filter-backend.onrender.com/health`
+- Test it: Open `https://rc-filter-backend.onrender.com/health` in your browser
+- You should see: `{"status":"ok","message":"Backend is running"}`
 
 ---
 
-## 🌐 Step 3: Deploy Frontend to Netlify
+## 🌐 Step 2: Deploy Frontend to Netlify
 
-### Option A: Using GitHub (Recommended)
+### Using GitHub (Recommended)
 
 ```bash
 1. Go to https://netlify.com
 2. Sign up with GitHub
 3. Click "Add new site" → "Import an existing project"
-4. Select GitHub → Choose your repository
+4. Select GitHub → Choose your repository (RC_Filter)
 5. Configure build settings:
    - Base directory: frontend
    - Build command: npm run build
@@ -101,11 +79,11 @@
 
 **After deployment:**
 - Your frontend URL will be: `https://your-site-name.netlify.app`
-- Check Netlify for the exact URL assigned
+- Netlify will show you the exact URL
 
 ---
 
-## ✅ Step 4: Verify Deployment
+## ✅ Step 3: Verify Everything Works
 
 ```bash
 1. Open your Netlify URL in browser
@@ -114,7 +92,7 @@
    ✓ Click "Low-Pass Filter" tab
    ✓ Enter frequency: 1000
    ✓ Click "Calculate Gain"
-   ✓ Check if results appear
+   ✓ Check if results appear (gain_db, vout)
    ✓ Check if graph loads with 100 points
    ✓ Switch to "High-Pass Filter" and repeat
 ```
@@ -122,31 +100,26 @@
 **If not working:**
 - Open browser DevTools (F12)
 - Check Console tab for errors
-- Common issue: Backend URL is wrong → Update .env.production
-- Common issue: MongoDB not connected → Check MongoDB Atlas IP whitelist
+- Common issue: Backend URL is wrong → Update REACT_APP_BACKEND_URL in Netlify environment
 
 ---
 
-## 📝 File Structure for Deployment
+## 📝 Your Project Structure
 
 ```
 rc-filter-project/
 ├── backend/
-│   ├── server.py
-│   ├── requirements.txt
-│   ├── .env
-│   ├── Procfile                 ← Created ✓
-│   └── render.yaml              ← Created ✓
+│   ├── server.py         ← FastAPI backend (no database!)
+│   ├── requirements.txt   ← Only 4 dependencies now
+│   ├── Procfile
+│   └── render.yaml
 │
 ├── frontend/
 │   ├── package.json
-│   ├── netlify.toml             ← Created ✓
-│   ├── .env.production          ← Created ✓
+│   ├── netlify.toml
+│   ├── .env.production   ← Contains backend URL
 │   ├── public/
-│   ├── src/
-│   └── build/                   ← Created after npm run build
-│
-└── DEPLOYMENT_GUIDE.md          ← Created ✓
+│   └── src/
 ```
 
 ---
@@ -159,7 +132,7 @@ rc-filter-project/
 # Every time you push to GitHub:
 git add .
 git commit -m "Update project"
-git push origin main
+git push origin master
 
 # Netlify and Render automatically:
 # ✓ Pull latest code
@@ -190,50 +163,57 @@ git push origin main
 ### Graph not loading
 ```
 1. Check browser console for errors (F12)
-2. Verify REACT_APP_BACKEND_URL is correct
-3. Check CORS settings in backend (should be *)
-4. Verify backend is responding: https://rc-filter-backend.onrender.com/api/sweep
-```
-
-### MongoDB connection fails
-```
-1. Check IP whitelist in MongoDB Atlas
-2. Verify connection string format
-3. Check username/password (URL encode special characters)
-4. Test connection: mongosh "your-connection-string"
+2. Verify REACT_APP_BACKEND_URL is correct in Netlify
+3. Test backend directly: https://rc-filter-backend.onrender.com/health
+4. Check Render logs for server errors
 ```
 
 ---
 
-## 💾 Backup & Cleanup
+## 💾 Your Deployed App
 
-```bash
-# Your project is now live at:
-# Frontend: https://your-site.netlify.app
-# Backend: https://rc-filter-backend.onrender.com
-# Database: MongoDB Atlas
-
-# Keep these safe:
-- GitHub repository (source code)
-- MongoDB Atlas credentials
-- Render and Netlify dashboard access
 ```
+Frontend: https://your-site.netlify.app
+Backend API: https://rc-filter-backend.onrender.com
+Database: None needed! 🎉
+```
+
+---
+
+## 📚 Backend Details (For Reference)
+
+Your FastAPI backend calculates RC filter responses using pure math:
+
+**Endpoints:**
+- `POST /api/rc-gain` - Calculate gain at single frequency
+  - Input: `{frequency: 1000, filter_type: "low-pass"}`
+  - Output: `{frequency, magnitude, gain_db, vout, filter_type}`
+
+- `POST /api/sweep` - Generate 100-point frequency sweep
+  - Input: `{frequency: 1000, filter_type: "high-pass"}`
+  - Output: `{frequencies: [...], gains_db: [...], filter_type}`
+
+- `GET /health` - Health check
+  - Output: `{"status":"ok"}`
+
+**Filter Types:**
+- Low-Pass: |H| = 1 / sqrt(1 + (ωRC)²)
+- High-Pass: |H| = (ωRC) / sqrt(1 + (ωRC)²)
+
+**Constants:**
+- R = 10 kΩ (10,000 Ω)
+- C = 0.01 µF (10⁻⁸ F)
+- VIN = 10 V
 
 ---
 
 ## 🎉 Congratulations!
 
-Your RC Filter Simulator is now deployed and accessible worldwide!
+Your RC Filter Simulator is now live worldwide with no database overhead!
 
-**Share your app:**
-```
-Frontend URL: https://your-site.netlify.app
-Backend API: https://rc-filter-backend.onrender.com
-```
+**Deploy time:** ~10 minutes  
+**Backend size:** ~4 KB (tiny!)  
+**Maintenance:** Zero - no database to manage  
+**Cost:** Free tier for both services
 
----
-
-**Need help?**
-- Render docs: https://render.com/docs
-- Netlify docs: https://docs.netlify.com
-- MongoDB Atlas: https://docs.atlas.mongodb.com
+Enjoy your fast, simple, and reliable deployment! 🚀
